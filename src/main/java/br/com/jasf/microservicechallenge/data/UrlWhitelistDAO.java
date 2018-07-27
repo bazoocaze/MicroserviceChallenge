@@ -14,8 +14,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.*;
 import org.springframework.util.Assert;
 
-import utils.BooleanReference;
-import utils.PreConditions;
+import br.com.jasf.microservicechallenge.utils.BooleanReference;
+import br.com.jasf.microservicechallenge.utils.PreConditions;
 
 @Component
 public class UrlWhitelistDAO {

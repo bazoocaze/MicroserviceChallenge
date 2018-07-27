@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.lang.NonNull;
 
-import utils.PreConditions;
+import br.com.jasf.microservicechallenge.utils.PreConditions;
 
 public class UrlWhitelistItemRsAdapter {
 	public static void loadTo(@NonNull ResultSet rs, @NonNull UrlWhitelistItem item) throws SQLException

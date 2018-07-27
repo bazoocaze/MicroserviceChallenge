@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.jasf.microservicechallenge.data.UrlWhitelistDAO;
 import br.com.jasf.microservicechallenge.messages.WhitelistInsertRequest;
-import utils.PreConditions;
+import br.com.jasf.microservicechallenge.utils.PreConditions;
 
 @Component
 public class WhitelistInsertReceiver {

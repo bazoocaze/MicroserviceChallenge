@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 	private String insertQueue;
-	private String validationQueue;	
+	private String validationQueue;
 	private int numberOfValidationConsumers;
 	private String responseExchange;
 	private String responseRoutingKey;
@@ -15,7 +15,7 @@ public class AppConfig {
 
 	public AppConfig() {
 		System.err.println("AppConfig.ctor");
-		
+
 		// TODO: acertar a origem das configurações
 		insertQueue = "teste.insert";
 		validationQueue = "teste.validation";
@@ -25,15 +25,7 @@ public class AppConfig {
 		jdbcUrl = "";
 		numberOfInsertConsumers = 3;
 	}
-	
-	@Bean
-	public AppConfig appConfig1()
-	{
-		System.err.println("AppConfig.appConfig()");
 
-		return new AppConfig();
-	}
-	
 	public String getInsertQueue() {
 		return insertQueue;
 	}
