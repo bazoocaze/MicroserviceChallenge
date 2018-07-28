@@ -41,16 +41,12 @@ public class UrlValidationReceiver {
 	public void receiveMessage(byte[] message) {
 		PreConditions.checkNotNull(message, "message");
 
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Mensagem recebida: %d bytes", message.length));
-		}
+		logger.info(String.format("Mensagem recebida: %d bytes", message.length));
 
 		try {
 			UrlValidationRequest request = objMapper.readValue(message, UrlValidationRequest.class);
 
-			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("Requisição recebida: %s", request));
-			}
+			logger.info(String.format("Requisição recebida: %s", request));
 
 			ProcessRequest(request);
 		} catch (IOException ex) {
@@ -60,6 +56,11 @@ public class UrlValidationReceiver {
 
 	private void ProcessRequest(UrlValidationRequest request) {
 		PreConditions.checkNotNull(request, "request");
+
+		if (request.getUrl() == null || request.getUrl().isEmpty()) {
+			logger.warn(String.format("Requisição recebida inválida: %s", request));
+			return;
+		}
 
 		Function<UrlWhitelistItem, Boolean> func = (item) -> {
 			if (request.getUrl().matches(item.getRegex())) {
@@ -90,9 +91,8 @@ public class UrlValidationReceiver {
 	private void SendResponse(UrlValidationResponse response) {
 		PreConditions.checkNotNull(response, "response");
 
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Enviando resposta: %s", response));
-		}
+		logger.info(String.format("Enviando resposta: %s", response));
+
 		rabbitTemplate.convertAndSend(urlValidationExchange.getName(), appConfig.getResponseRoutingKey(), response);
 	}
 }

@@ -9,15 +9,15 @@ package br.com.jasf.microservicechallenge.messages;
 public class UrlValidationResponse {
 	private boolean match;
 	private String regex;
-	private String correlationId;
+	private int correlationId;
 
 	public UrlValidationResponse() {
 		this.match = false;
 		this.regex = null;
-		this.correlationId = null;
+		this.correlationId = 0;
 	}
 
-	public UrlValidationResponse(boolean match, String regex, String correlationId) {
+	public UrlValidationResponse(boolean match, String regex, int correlationId) {
 		this.match = match;
 		this.regex = regex;
 		this.correlationId = correlationId;
@@ -31,7 +31,7 @@ public class UrlValidationResponse {
 		return regex;
 	}
 
-	public String getCorrelationId() {
+	public int getCorrelationId() {
 		return correlationId;
 	}
 
@@ -43,12 +43,12 @@ public class UrlValidationResponse {
 		this.regex = regex;
 	}
 
-	public void setCorrelationId(String correlationId) {
+	public void setCorrelationId(int correlationId) {
 		this.correlationId = correlationId;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("{ match=[%s], correlatorioId=[%s], regex=[%s] }", match, correlationId, regex);
+		return String.format("{ match=[%s], regex=[%s], correlatorioId=[%s] }", match, regex, correlationId);
 	}
 }

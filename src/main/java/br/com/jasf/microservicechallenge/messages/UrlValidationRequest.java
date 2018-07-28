@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class UrlValidationRequest {
 	private String clienteId;
 	private String url;
-	private String correlationId;
+	private int correlationId;
 
 	public String getClienteId() {
 		return clienteId;
@@ -21,7 +21,7 @@ public class UrlValidationRequest {
 		return url;
 	}
 
-	public String getCorrelationId() {
+	public int getCorrelationId() {
 		return correlationId;
 	}
 
@@ -35,12 +35,12 @@ public class UrlValidationRequest {
 	}
 
 	@JsonSetter("correlation_id")
-	public void setCorrelationId(String correlationId) {
+	public void setCorrelationId(int correlationId) {
 		this.correlationId = correlationId;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("{ clientId=[%s], correlationId=[%s], url=[%s] }", clienteId, correlationId, url);
+		return String.format("{ clientId=[%s], url=[%s], correlationId=[%s] }", clienteId, url, correlationId);
 	}
 }

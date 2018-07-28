@@ -34,15 +34,11 @@ public class WhitelistInsertReceiver {
 	public void receiveMessage(byte[] message) {
 		PreConditions.checkNotNull(message, "message");
 
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Mensagem recebida: %d bytes", message.length));
-		}
+		logger.info(String.format("Mensagem recebida: %d bytes", message.length));
 
 		try {
 			WhitelistInsertRequest request = objMapper.readValue(message, WhitelistInsertRequest.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("Requisição recebida: %s", request));
-			}
+			logger.info(String.format("Requisição recebida: %s", request));
 			ProcessRequest(request);
 		} catch (IOException ex) {
 			logger.warn(String.format("Falha no processamento da requisição: %s", ex));
@@ -57,6 +53,10 @@ public class WhitelistInsertReceiver {
 			return;
 		}
 
-		urlWhitelistDAO.insertRegex(request.getClientId(), request.getRegex());
+		if (urlWhitelistDAO.insertRegex(request.getClientId(), request.getRegex())) {
+			logger.info("Regex cadastrada com sucesso");
+		} else {
+			logger.info("Regex já cadastrada");
+		}
 	}
 }
