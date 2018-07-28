@@ -2,6 +2,12 @@ package br.com.jasf.microservicechallenge.messages;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+/************************
+ * Representa uma mensagem de requisição do serviço validation.
+ * 
+ * @author jose
+ *
+ */
 public class UrlValidationRequest {
 	private String clienteId;
 	private String url;
@@ -32,10 +38,9 @@ public class UrlValidationRequest {
 	public void setCorrelationId(String correlationId) {
 		this.correlationId = correlationId;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("{ clientId=[%s], correlationId=[%s], url=[%s] }",
-				clienteId, correlationId, url);
+		return String.format("{ clientId=[%s], correlationId=[%s], url=[%s] }", clienteId, correlationId, url);
 	}
 }

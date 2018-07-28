@@ -8,33 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import br.com.jasf.microservicechallenge.config.AppConfig;
+
+/********************
+ * Serviço de inserção de regex na whitelist de url.
+ * 
+ * @author jose
+ *
+ */
 @Service
 public class WhitelistInsertService {
 	@Autowired
+	private AppConfig appConfig;
+
+	@Autowired
 	private RabbitTemplate rabbitTemplate;
-	
+
 	@Autowired
 	private Queue whitelistInsertQueue;
 
-	@Bean WhitelistInsertService getInsertionService()
-	{
-		return new WhitelistInsertService();
-	}
-
 	@Bean
 	SimpleMessageListenerContainer whitelistInsertContainer(WhitelistInsertReceiver receiver) {
-		
-		System.err.println("WhitelistInsertService.container BEBIN");
-		
+
 		Queue queue = whitelistInsertQueue;
 
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
 		container.setQueueNames(queue.getName());
 		container.setMessageListener(new MessageListenerAdapter(receiver, "receiveMessage"));
-		container.setConcurrentConsumers(5);
-
-		System.err.println("WhitelistInsertService.container END");
+		container.setConcurrentConsumers(appConfig.getNumberOfInsertionConsumers());
 
 		return container;
 	}

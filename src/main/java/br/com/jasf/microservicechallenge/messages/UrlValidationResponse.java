@@ -1,13 +1,17 @@
 package br.com.jasf.microservicechallenge.messages;
 
-
+/*******************
+ * Representa uma mensagem de resposta do serviço validation.
+ * 
+ * @author jose
+ *
+ */
 public class UrlValidationResponse {
 	private boolean match;
 	private String regex;
 	private String correlationId;
-	
-	public UrlValidationResponse()
-	{
+
+	public UrlValidationResponse() {
 		this.match = false;
 		this.regex = null;
 		this.correlationId = null;

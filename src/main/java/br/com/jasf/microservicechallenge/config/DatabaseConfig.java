@@ -2,34 +2,45 @@ package br.com.jasf.microservicechallenge.config;
 
 import java.io.IOException;
 
-import javax.print.DocFlavor.STRING;
-
 import org.apache.commons.logging.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import br.com.jasf.microservicechallenge.utils.Util;
 
+/****************
+ * Configuração/preparação do banco de dados.
+ * 
+ * @author jose
+ *
+ */
 @Configuration
 public class DatabaseConfig {
 	private Log logger;
 	private JdbcTemplate jdbcTemplate;
 	private ResourceConfig resourceConfig;
 
+	/*********************
+	 * Prepara o banco de dados para uso, criando a tabela da whitelist caso não
+	 * exista.
+	 * 
+	 * @param appConfig
+	 * @param jdbcTemplate
+	 * @param resourceConfig
+	 * @throws IOException
+	 */
 	@Autowired
-	private void prepareConnection(JdbcTemplate jdbcTemplate, ResourceConfig resourceConfig) throws IOException {
+	private void prepareConnection(AppConfig appConfig, JdbcTemplate jdbcTemplate, ResourceConfig resourceConfig)
+			throws IOException {
 		this.logger = LogFactory.getLog(DatabaseConfig.class);
 		this.jdbcTemplate = jdbcTemplate;
 		this.resourceConfig = resourceConfig;
 
 		// TODO: tornar em propriedades
-		int tries = 12;
-		int delay = 5;
+		int tries = appConfig.getFailureRetries();
+		int delay = appConfig.getFailureInterval();
 		while (tries-- > 0) {
 			String msg;
 			try {
@@ -57,6 +68,13 @@ public class DatabaseConfig {
 		}
 	}
 
+	/***********************
+	 * Tenta criar as tabelas no banco a partir do resource .sql de definição das
+	 * tabelas.
+	 * 
+	 * @throws IOException
+	 * @throws DataAccessException
+	 */
 	private void tryCreateTables() throws IOException, DataAccessException {
 		logger.info("Criando tabelas do banco de dados (caso necessário)");
 		String sql = resourceConfig.getCreateTableResource();

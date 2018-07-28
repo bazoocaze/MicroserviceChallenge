@@ -2,52 +2,58 @@ package br.com.jasf.microservicechallenge.services;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.apache.commons.logging.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.jasf.microservicechallenge.data.UrlWhitelistDAO;
-import br.com.jasf.microservicechallenge.messages.WhitelistInsertRequest;
-import br.com.jasf.microservicechallenge.utils.PreConditions;
+import br.com.jasf.microservicechallenge.data.*;
+import br.com.jasf.microservicechallenge.messages.*;
+import br.com.jasf.microservicechallenge.utils.*;
 
+/*********************
+ * Recebimento e processamento de mensagens do serviço de inserção de regex na
+ * whitelist.
+ * 
+ * @author jose
+ *
+ */
 @Component
 public class WhitelistInsertReceiver {
 	@Autowired
 	private UrlWhitelistDAO urlWhitelistDAO;
 
+	// ObjectMapper é thread-safe (menos em caso de alteração de configuração)
+	// Fonte:
+	// https://stackoverflow.com/questions/3907929/should-i-declare-jacksons-objectmapper-as-a-static-field
 	private static final ObjectMapper objMapper = new ObjectMapper();
 
-	public void receiveMessage(String message) {
-		System.out.println("WhitelistInsertionReceiver.Received <" + message + ">");
-	}
+	private static final Log logger = LogFactory.getLog(WhitelistInsertReceiver.class);
 
 	public void receiveMessage(byte[] message) {
-		System.out.println("WhitelistInsertionReceiver.Received[byte] BEGIN");
+		PreConditions.checkNotNull(message, "message");
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(String.format("Mensagem recebida: %d bytes", message.length));
+		}
 
 		try {
 			WhitelistInsertRequest request = objMapper.readValue(message, WhitelistInsertRequest.class);
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format("Requisição recebida: %s", request));
+			}
 			ProcessRequest(request);
-		} catch (IOException ex1) {
-			// TODO Auto-generated catch block
-			ex1.printStackTrace();
+		} catch (IOException ex) {
+			logger.warn(String.format("Falha no processamento da requisição: %s", ex));
 		}
-
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-
-		System.out.println("WhitelistInsertionReceiver.Received[byte] END");
 	}
 
 	private void ProcessRequest(WhitelistInsertRequest request) {
 		PreConditions.checkNotNull(request, "request");
 
 		if (request.getRegex() == null || request.getRegex().isEmpty()) {
-			// TODO: mensagem de falha
+			logger.warn(String.format("Requisição recebida inválida: %s", request));
 			return;
 		}
 

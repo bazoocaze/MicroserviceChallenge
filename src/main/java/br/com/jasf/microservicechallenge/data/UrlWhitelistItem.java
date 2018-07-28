@@ -1,5 +1,11 @@
 package br.com.jasf.microservicechallenge.data;
 
+import br.com.jasf.microservicechallenge.utils.PreConditions;
+
+/*********************
+ * Representa um item da whitelist.
+ * @author jose
+ */
 public class UrlWhitelistItem {
 	private int id;
 	private String clientId;
@@ -13,16 +19,18 @@ public class UrlWhitelistItem {
 		return regex;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
 	public void setRegex(String regex) {
-		this.regex = regex;
-	}
+		PreConditions.checkString(regex, "regex");
 
-	public int getId() {
-		return id;
+		this.regex = regex;
 	}
 
 	public void setId(int id) {

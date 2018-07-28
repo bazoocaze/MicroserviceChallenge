@@ -4,6 +4,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+/****************
+ * PreConditions simples
+ * 
+ * @author jose
+ *
+ */
 public class PreConditions {
 
 	public static void checkNotNull(@Nullable Object value, @NonNull String parameterName)
@@ -18,5 +24,4 @@ public class PreConditions {
 			throw new IllegalArgumentException(
 					String.format("Argumento '%s' não pode ser o string vazio", parameterName));
 	}
-
 }

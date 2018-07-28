@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "br.com.jasf.microservicechallenge.exchange",
+    "type": "java.lang.String",
+    "description": "Name of the RabbitMQ queue for the validation service response"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.routing-key",
+    "type": "java.lang.String",
+    "description": "Routing key for the validation response"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.insertion-queue",
+    "type": "java.lang.String",
+    "description": "Name of the RabbitMQ queue for the insertion service"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.validation-queue",
+    "type": "java.lang.String",
+    "description": "Name of the RabbitMQ queue for the validation service"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.validation-consumers",
+    "type": "java.lang.Integer",
+    "description": "Number of validation consumers on the validation service"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.insertion-consumers",
+    "type": "java.lang.Integer",
+    "description": "Number of insertion consumers on the insertion service"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.failure.num-retries",
+    "type": "java.lang.Integer",
+    "description": "Number of retries on connection failure (Rabbit and Database)"
+  },
+  {
+    "name": "br.com.jasf.microservicechallenge.failure.interval",
+    "type": "java.lang.Integer",
+    "description": "Interval between retries on connection failure (Rabbit and Database)"
+  }
+]}

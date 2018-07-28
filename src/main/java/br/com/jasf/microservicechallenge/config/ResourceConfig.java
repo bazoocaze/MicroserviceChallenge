@@ -14,11 +14,15 @@ public class ResourceConfig {
 
 	@Value("classpath:create_tables.sql")
 	private Resource createTableResource;
-	
-	public String getCreateTableResource() throws IOException
-	{
-		try(InputStream stream = createTableResource.getInputStream())
-		{
+
+	/*********************
+	 * Obtem o DDL de criação de tabelas a partir dos recursos do programa.
+	 * 
+	 * @return O conteúdo do arquivo contendo os comandos DDL.
+	 * @throws IOException
+	 */
+	public String getCreateTableResource() throws IOException {
+		try (InputStream stream = createTableResource.getInputStream()) {
 			return StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
 		}
 	}
