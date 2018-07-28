@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  *
  */
 public class UrlValidationRequest {
-	private String clienteId;
+	private String client;
 	private String url;
 	private int correlationId;
 
-	public String getClienteId() {
-		return clienteId;
+	public String getClient() {
+		return client;
 	}
 
 	public String getUrl() {
@@ -25,22 +25,20 @@ public class UrlValidationRequest {
 		return correlationId;
 	}
 
-	@JsonSetter("client_id")
-	public void setClienteId(String clienteId) {
-		this.clienteId = clienteId;
+	public void setCliente(String cliente) {
+		this.client = cliente;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	@JsonSetter("correlation_id")
 	public void setCorrelationId(int correlationId) {
 		this.correlationId = correlationId;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("{ clientId=[%s], url=[%s], correlationId=[%s] }", clienteId, url, correlationId);
+		return String.format("{ client=[%s], url=[%s], correlationId=[%s] }", client, url, correlationId);
 	}
 }

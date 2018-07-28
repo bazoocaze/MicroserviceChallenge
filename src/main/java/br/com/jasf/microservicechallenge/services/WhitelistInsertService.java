@@ -30,11 +30,9 @@ public class WhitelistInsertService {
 	@Bean
 	SimpleMessageListenerContainer whitelistInsertContainer(WhitelistInsertReceiver receiver) {
 
-		Queue queue = whitelistInsertQueue;
-
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(rabbitTemplate.getConnectionFactory());
-		container.setQueueNames(queue.getName());
+		container.addQueues(whitelistInsertQueue);
 		container.setMessageListener(new MessageListenerAdapter(receiver, "receiveMessage"));
 		container.setConcurrentConsumers(appConfig.getNumberOfInsertionConsumers());
 

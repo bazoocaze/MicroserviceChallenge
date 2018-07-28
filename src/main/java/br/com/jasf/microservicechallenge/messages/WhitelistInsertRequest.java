@@ -9,20 +9,19 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  *
  */
 public class WhitelistInsertRequest {
-	private String clientId;
+	private String client;
 	private String regex;
 
-	public String getClientId() {
-		return clientId;
+	public String getClient() {
+		return client;
 	}
 
 	public String getRegex() {
 		return regex;
 	}
 
-	@JsonSetter("client_id")
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setClient(String client) {
+		this.client = client;
 	}
 
 	public void setRegex(String regex) {
@@ -31,6 +30,6 @@ public class WhitelistInsertRequest {
 
 	@Override
 	public String toString() {
-		return String.format("{ clientId=[%s], regex=[%s] }", clientId, regex);
+		return String.format("{ client=[%s], regex=[%s] }", client, regex);
 	}
 }

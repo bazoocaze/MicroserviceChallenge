@@ -49,7 +49,7 @@ public class UrlValidationReceiver {
 			logger.info(String.format("Requisição recebida: %s", request));
 
 			ProcessRequest(request);
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			logger.warn(String.format("Falha no processamento da requisição: %s", ex));
 		}
 	}
@@ -57,8 +57,14 @@ public class UrlValidationReceiver {
 	private void ProcessRequest(UrlValidationRequest request) {
 		PreConditions.checkNotNull(request, "request");
 
+		if(request.getClient() == null)
+		{
+			logger.warn(String.format("Requisição recebida inválida (client): %s", request));
+			return;			
+		}
+		
 		if (request.getUrl() == null || request.getUrl().isEmpty()) {
-			logger.warn(String.format("Requisição recebida inválida: %s", request));
+			logger.warn(String.format("Requisição recebida inválida (url): %s", request));
 			return;
 		}
 
@@ -73,14 +79,14 @@ public class UrlValidationReceiver {
 			return false;
 		};
 
-		if (urlWhitelistDAO.forEach(request.getClienteId(), func)) {
-			return;
-		}
-
-		if (request.getClienteId() != null) {
-			if (urlWhitelistDAO.forEach(null, func)) {
+		if (request.getClient() != null) {
+			if (urlWhitelistDAO.forEach(request.getClient(), func)) {
 				return;
 			}
+		}
+
+		if (urlWhitelistDAO.forEach(null, func)) {
+			return;
 		}
 
 		// Não encontrou

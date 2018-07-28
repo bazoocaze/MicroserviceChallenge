@@ -27,7 +27,7 @@ public class UrlWhitelistItemRsAdapter {
 		PreConditions.checkNotNull(toItem, "item");
 
 		toItem.setId(fromRs.getInt("id"));
-		toItem.setClientId(fromRs.getString("client_id"));
+		toItem.setClient(fromRs.getString("client_id"));
 		toItem.setRegex(fromRs.getString("test_regex"));
 	}
 }

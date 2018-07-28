@@ -40,7 +40,7 @@ public class WhitelistInsertReceiver {
 			WhitelistInsertRequest request = objMapper.readValue(message, WhitelistInsertRequest.class);
 			logger.info(String.format("Requisição recebida: %s", request));
 			ProcessRequest(request);
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			logger.warn(String.format("Falha no processamento da requisição: %s", ex));
 		}
 	}
@@ -49,11 +49,11 @@ public class WhitelistInsertReceiver {
 		PreConditions.checkNotNull(request, "request");
 
 		if (request.getRegex() == null || request.getRegex().isEmpty()) {
-			logger.warn(String.format("Requisição recebida inválida: %s", request));
+			logger.warn(String.format("Requisição recebida inválida (regex): %s", request));
 			return;
 		}
 
-		if (urlWhitelistDAO.insertRegex(request.getClientId(), request.getRegex())) {
+		if (urlWhitelistDAO.insertRegex(request.getClient(), request.getRegex())) {
 			logger.info("Regex cadastrada com sucesso");
 		} else {
 			logger.info("Regex já cadastrada");

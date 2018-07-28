@@ -8,11 +8,11 @@ import br.com.jasf.microservicechallenge.utils.PreConditions;
  */
 public class UrlWhitelistItem {
 	private int id;
-	private String clientId;
+	private String client;
 	private String regex;
 
-	public String getClientId() {
-		return clientId;
+	public String getClient() {
+		return client;
 	}
 
 	public String getRegex() {
@@ -23,8 +23,8 @@ public class UrlWhitelistItem {
 		return id;
 	}
 
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setClient(String client) {
+		this.client = client;
 	}
 
 	public void setRegex(String regex) {
