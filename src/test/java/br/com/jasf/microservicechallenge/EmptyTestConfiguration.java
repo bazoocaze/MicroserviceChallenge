@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @Configuration
-public class TestConfiguration {
+public class EmptyTestConfiguration {
 
 }
