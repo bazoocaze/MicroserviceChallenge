@@ -14,7 +14,7 @@ public class ResourceConfig {
 
 	@Value("classpath:create_tables.sql")
 	private Resource createTableResource;
-
+	
 	/*********************
 	 * Obtem o DDL de criação de tabelas a partir dos recursos do programa.
 	 * 

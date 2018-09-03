@@ -1,25 +1,18 @@
 package br.com.jasf.microservicechallenge.data;
 
-import java.util.function.*;
+import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.dao.*;
-import org.springframework.jdbc.core.*;
-import org.springframework.lang.*;
-import org.springframework.stereotype.*;
-import br.com.jasf.microservicechallenge.utils.*;
+import org.springframework.dao.DataAccessException;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /********************
- * Interface de acesso a whitelist no banco de dados.
+ * Interface de acesso ao repositório de whitelist.
  * 
  * @author jose
  *
  */
-@Component
-public class UrlWhitelistDAO {
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+public interface UrlWhitelistDAO {
 
 	/*****************************
 	 * Insere o regex na whitelist para o cliente informado (null para lista
@@ -30,25 +23,7 @@ public class UrlWhitelistDAO {
 	 * @return True/false se a regex foi inserida.
 	 * @throws DataAccessException Em caso de erro de sql/banco de dados
 	 */
-	public boolean insertRegex(@Nullable String client, @NonNull String regex) throws DataAccessException {
-		PreConditions.checkString(regex, "regex");
-
-		String sql;
-
-		if (client == null) {
-			sql = "SELECT count(*) FROM url_whitelist WHERE client_id is ? AND test_regex = ?";
-		} else {
-			sql = "SELECT count(*) FROM url_whitelist WHERE client_id = ? AND test_regex = ?";
-		}
-
-		// Verifica se já existe, só cadastra se não existir
-		if (jdbcTemplate.queryForObject(sql, new Object[] { client, regex }, Integer.class) == 0) {
-			sql = "INSERT INTO url_whitelist (client_id, test_regex) VALUES (?, ?);";
-			jdbcTemplate.update(sql, client, regex);
-			return true;
-		}
-		return false;
-	}
+	boolean insertRegex(@Nullable String client, @NonNull String regex) throws DataAccessException;
 
 	/*****************************
 	 * Executa o delegate para cada entrada da whitelist do cliente informado (null
@@ -60,27 +35,6 @@ public class UrlWhitelistDAO {
 	 * @return Retorna true se o delegate encontrou a informação (retornou true) ou
 	 *         false caso contrário.
 	 */
-	public boolean forEach(@Nullable String client, @NonNull Function<UrlWhitelistItem, Boolean> action) {
-		PreConditions.checkNotNull(action, "action");
+	boolean forEach(@Nullable String client, @NonNull Function<UrlWhitelistItem, Boolean> action);
 
-		UrlWhitelistItem item = new UrlWhitelistItem();
-		String sql;
-
-		ResultSetExtractor<Boolean> func = (rs) -> {
-			while (rs.next()) {
-				UrlWhitelistItemRsAdapter.loadTo(rs, item);
-				if (action.apply(item)) {
-					return true;
-				}
-			}
-			return false;
-		};
-
-		if (client == null) {
-			sql = "SELECT * FROM url_whitelist WHERE client_id is ?;";
-		} else {
-			sql = "SELECT * FROM url_whitelist WHERE client_id = ?;";
-		}
-		return jdbcTemplate.query(sql, new Object[] { client }, func);
-	}
 }

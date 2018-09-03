@@ -1,16 +1,14 @@
 package br.com.jasf.microservicechallenge.services;
 
-import java.io.IOException;
-
-import org.apache.commons.logging.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.jasf.microservicechallenge.data.*;
-import br.com.jasf.microservicechallenge.messages.*;
-import br.com.jasf.microservicechallenge.utils.*;
+import br.com.jasf.microservicechallenge.data.UrlWhitelistDAO;
+import br.com.jasf.microservicechallenge.messages.WhitelistInsertRequest;
+import br.com.jasf.microservicechallenge.utils.PreConditions;
 
 /*********************
  * Recebimento e processamento de mensagens do serviço de inserção de regex na
@@ -21,8 +19,12 @@ import br.com.jasf.microservicechallenge.utils.*;
  */
 @Component
 public class WhitelistInsertReceiver {
-	@Autowired
+
 	private UrlWhitelistDAO urlWhitelistDAO;
+
+	public WhitelistInsertReceiver(UrlWhitelistDAO urlWhitelistDAO) {
+		this.urlWhitelistDAO = urlWhitelistDAO;
+	}
 
 	// ObjectMapper é thread-safe (menos em caso de alteração de configuração)
 	// Fonte:

@@ -38,7 +38,6 @@ public class DatabaseConfig {
 		this.jdbcTemplate = jdbcTemplate;
 		this.resourceConfig = resourceConfig;
 
-		// TODO: tornar em propriedades
 		int tries = appConfig.getFailureRetries();
 		int delay = appConfig.getFailureInterval();
 		while (tries-- > 0) {

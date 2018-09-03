@@ -18,8 +18,12 @@ import br.com.jasf.microservicechallenge.utils.Util;
  */
 @Configuration
 public class RabbitConfig {
-	@Autowired
+
 	private AppConfig appConfig;
+
+	public RabbitConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
+	}
 
 	@Bean
 	public MessageConverter jsonMessageConverter() {
