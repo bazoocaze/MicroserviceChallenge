@@ -24,4 +24,11 @@ public class PreConditions {
 			throw new IllegalArgumentException(
 					String.format("Argumento '%s' não pode ser o string vazio", parameterName));
 	}
+
+	public static void checkEmpty(@Nullable String value, @NonNull String parameterName)
+			throws IllegalArgumentException {
+		if (value != null && value.isEmpty())
+			throw new IllegalArgumentException(
+					String.format("Argumento '%s' não pode ser o string vazio", parameterName));
+	}
 }

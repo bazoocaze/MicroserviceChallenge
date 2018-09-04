@@ -21,16 +21,15 @@ import br.com.jasf.microservicechallenge.config.ResourceConfig;
 @ContextConfiguration(classes=ResourceConfig.class)
 public class ResourceConfigTests {
 	
-	@Test
-	public void contextLoads() {
-	}
-	
 	@Autowired
 	ResourceConfig resourceConfig;
 
 	@Test
 	public void testGetCreateTableResource() throws IOException {
+		// Garante que pode carregar o script de Create Table
 		String content = resourceConfig.getCreateTableResource();
+		
+		// Garante que o script contém CREATE TABLE
 		assertThat(content).contains("CREATE TABLE");
 	}
 

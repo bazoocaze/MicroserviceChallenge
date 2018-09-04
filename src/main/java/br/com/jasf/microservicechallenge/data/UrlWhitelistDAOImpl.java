@@ -37,6 +37,7 @@ public class UrlWhitelistDAOImpl implements UrlWhitelistDAO {
 	 */
 	@Override
 	public boolean insertRegex(@Nullable String client, @NonNull String regex) throws DataAccessException {
+		PreConditions.checkEmpty(client, "client");
 		PreConditions.checkString(regex, "regex");
 
 		String sql;
