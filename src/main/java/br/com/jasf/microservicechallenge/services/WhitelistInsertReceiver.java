@@ -50,6 +50,11 @@ public class WhitelistInsertReceiver {
 	private void ProcessRequest(WhitelistInsertRequest request) {
 		PreConditions.checkNotNull(request, "request");
 
+		if (request.getClient() != null && request.getClient().isEmpty()) {
+			logger.warn(String.format("Requisição recebida inválida (client): %s", request));
+			return;
+		}
+
 		if (request.getRegex() == null || request.getRegex().isEmpty()) {
 			logger.warn(String.format("Requisição recebida inválida (regex): %s", request));
 			return;
