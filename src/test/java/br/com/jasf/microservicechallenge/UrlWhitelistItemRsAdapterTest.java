@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import br.com.jasf.microservicechallenge.context.EmptyTestConfiguration;
 import br.com.jasf.microservicechallenge.data.UrlWhitelistItem;
 import br.com.jasf.microservicechallenge.data.UrlWhitelistItemRsAdapter;
 
@@ -22,7 +23,7 @@ import br.com.jasf.microservicechallenge.data.UrlWhitelistItemRsAdapter;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = { EmptyTestConfiguration.class })
 public class UrlWhitelistItemRsAdapterTest {
-
+	
 	@Test
 	public void testLoadTo() throws SQLException {
 		UrlWhitelistItem item = new UrlWhitelistItem();

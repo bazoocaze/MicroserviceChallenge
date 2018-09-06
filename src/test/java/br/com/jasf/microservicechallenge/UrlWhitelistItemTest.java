@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.jasf.microservicechallenge.config.ResourceConfig;
+import br.com.jasf.microservicechallenge.context.EmptyTestConfiguration;
 import br.com.jasf.microservicechallenge.data.UrlWhitelistItem;
 
 @RunWith(SpringRunner.class)

@@ -16,20 +16,16 @@ import br.com.jasf.microservicechallenge.data.UrlWhitelistItem;
 import br.com.jasf.microservicechallenge.messages.UrlValidationRequest;
 import br.com.jasf.microservicechallenge.messages.UrlValidationResponse;
 import br.com.jasf.microservicechallenge.utils.PreConditions;
-
+	
 @Component
 public class UrlValidationReceiver {
-	private AppConfig appConfig;
-	private RabbitTemplate rabbitTemplate;
-	private TopicExchange urlValidationExchange;
-	private UrlWhitelistDAO urlWhitelistDAO;
 
-	public UrlValidationReceiver(AppConfig appConfig, RabbitTemplate rabbitTemplate,
-			TopicExchange urlValidationExchange, UrlWhitelistDAO urlWhitelistDAO) {
-		this.appConfig = appConfig;
-		this.rabbitTemplate = rabbitTemplate;
-		this.urlValidationExchange = urlValidationExchange;
+	private UrlWhitelistDAO urlWhitelistDAO;
+	private UrlValidationResponseSender urlValidationResponseSender;
+
+	public UrlValidationReceiver(UrlWhitelistDAO urlWhitelistDAO, UrlValidationResponseSender urlValidationResponseSender) {
 		this.urlWhitelistDAO = urlWhitelistDAO;
+		this.urlValidationResponseSender = urlValidationResponseSender;
 	}
 
 	// ObjectMapper é thread-safe (menos em caso de alteração de configuração)
@@ -73,7 +69,7 @@ public class UrlValidationReceiver {
 				// Encontrou um match
 				UrlValidationResponse response = new UrlValidationResponse(true, item.getRegex(),
 						request.getCorrelationId());
-				SendResponse(response);
+				urlValidationResponseSender.SendResponse(response);
 				return true;
 			}
 			return false;
@@ -91,14 +87,7 @@ public class UrlValidationReceiver {
 
 		// Não encontrou
 		UrlValidationResponse response = new UrlValidationResponse(false, null, request.getCorrelationId());
-		SendResponse(response);
+		urlValidationResponseSender.SendResponse(response);
 	}
 
-	private void SendResponse(UrlValidationResponse response) {
-		PreConditions.checkNotNull(response, "response");
-
-		logger.info(String.format("Enviando resposta: %s", response));
-
-		rabbitTemplate.convertAndSend(urlValidationExchange.getName(), appConfig.getResponseRoutingKey(), response);
-	}
 }
