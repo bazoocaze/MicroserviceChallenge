@@ -1,26 +1,24 @@
 package br.com.jasf.microservicechallenge;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import br.com.jasf.microservicechallenge.config.ResourceConfig;
 import br.com.jasf.microservicechallenge.data.UrlWhitelistDAOImpl;
+import br.com.jasf.microservicechallenge.utils.Boxed;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -149,21 +147,20 @@ public class UrlWhitelistDAOImplTest {
 		urlWhitelistDAOImpl.insertRegex("123", "c.*");
 		urlWhitelistDAOImpl.insertRegex(null, "d.*");
 
-		int[] index = new int[1];
+		Boxed<Integer> index = new Boxed<>(0);
 		String[] ret = new String[3];
-		index[0] = 0;
 
 		urlWhitelistDAOImpl.forEach("123", item -> {
 			// Garante que retorna o códiigo do cliente correto da lista do cliente
 			assertEquals("123", item.getClient());
-			ret[index[0]++] = item.getRegex();
+			ret[index.value++] = item.getRegex();
 			return false;
 		});
 
 		urlWhitelistDAOImpl.forEach(null, item -> {
 			// Garante que retorno cliente==null da lista global
 			assertNull(item.getClient());
-			ret[index[0]++] = item.getRegex();
+			ret[index.value++] = item.getRegex();
 			return false;
 		});
 
