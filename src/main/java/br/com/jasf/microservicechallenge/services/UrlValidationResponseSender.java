@@ -4,6 +4,6 @@ import br.com.jasf.microservicechallenge.messages.UrlValidationResponse;
 
 public interface UrlValidationResponseSender {
 
-	void SendResponse(UrlValidationResponse response);
+	void sendResponse(UrlValidationResponse response);
 	
 }

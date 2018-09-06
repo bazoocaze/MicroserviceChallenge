@@ -22,16 +22,16 @@ public class WhitelistInsertReceiver {
 
 	private UrlWhitelistDAO urlWhitelistDAO;
 
-	public WhitelistInsertReceiver(UrlWhitelistDAO urlWhitelistDAO) {
-		this.urlWhitelistDAO = urlWhitelistDAO;
-	}
-
 	// ObjectMapper é thread-safe (menos em caso de alteração de configuração)
 	// Fonte:
 	// https://stackoverflow.com/questions/3907929/should-i-declare-jacksons-objectmapper-as-a-static-field
 	private static final ObjectMapper objMapper = new ObjectMapper();
 
 	private static final Log logger = LogFactory.getLog(WhitelistInsertReceiver.class);
+
+	public WhitelistInsertReceiver(UrlWhitelistDAO urlWhitelistDAO) {
+		this.urlWhitelistDAO = urlWhitelistDAO;
+	}
 
 	public void receiveMessage(byte[] message) {
 		PreConditions.checkNotNull(message, "message");

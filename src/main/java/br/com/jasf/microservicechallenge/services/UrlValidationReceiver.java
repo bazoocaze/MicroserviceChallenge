@@ -2,31 +2,21 @@ package br.com.jasf.microservicechallenge.services;
 
 import java.util.function.Function;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.apache.commons.logging.*;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.jasf.microservicechallenge.config.AppConfig;
-import br.com.jasf.microservicechallenge.data.UrlWhitelistDAO;
-import br.com.jasf.microservicechallenge.data.UrlWhitelistItem;
-import br.com.jasf.microservicechallenge.messages.UrlValidationRequest;
-import br.com.jasf.microservicechallenge.messages.UrlValidationResponse;
+import br.com.jasf.microservicechallenge.data.*;
+import br.com.jasf.microservicechallenge.messages.*;
 import br.com.jasf.microservicechallenge.utils.PreConditions;
-	
+
 @Component
 public class UrlValidationReceiver {
 
 	private UrlWhitelistDAO urlWhitelistDAO;
-	private UrlValidationResponseSender urlValidationResponseSender;
 
-	public UrlValidationReceiver(UrlWhitelistDAO urlWhitelistDAO, UrlValidationResponseSender urlValidationResponseSender) {
-		this.urlWhitelistDAO = urlWhitelistDAO;
-		this.urlValidationResponseSender = urlValidationResponseSender;
-	}
+	private UrlValidationResponseSender urlValidationResponseSender;
 
 	// ObjectMapper é thread-safe (menos em caso de alteração de configuração)
 	// Fonte:
@@ -34,6 +24,12 @@ public class UrlValidationReceiver {
 	private static final ObjectMapper objMapper = new ObjectMapper();
 
 	private static final Log logger = LogFactory.getLog(UrlValidationReceiver.class);
+
+	public UrlValidationReceiver(UrlWhitelistDAO urlWhitelistDAO,
+			UrlValidationResponseSender urlValidationResponseSender) {
+		this.urlWhitelistDAO = urlWhitelistDAO;
+		this.urlValidationResponseSender = urlValidationResponseSender;
+	}
 
 	public void receiveMessage(byte[] message) {
 		PreConditions.checkNotNull(message, "message");
@@ -69,7 +65,7 @@ public class UrlValidationReceiver {
 				// Encontrou um match
 				UrlValidationResponse response = new UrlValidationResponse(true, item.getRegex(),
 						request.getCorrelationId());
-				urlValidationResponseSender.SendResponse(response);
+				urlValidationResponseSender.sendResponse(response);
 				return true;
 			}
 			return false;
@@ -87,7 +83,7 @@ public class UrlValidationReceiver {
 
 		// Não encontrou
 		UrlValidationResponse response = new UrlValidationResponse(false, null, request.getCorrelationId());
-		urlValidationResponseSender.SendResponse(response);
+		urlValidationResponseSender.sendResponse(response);
 	}
 
 }

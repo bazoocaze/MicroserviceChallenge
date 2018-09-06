@@ -28,7 +28,7 @@ public class UrlValidationResponseSenderImpl implements UrlValidationResponseSen
 	}
 
 	@Override
-	public void SendResponse(UrlValidationResponse response) {
+	public void sendResponse(UrlValidationResponse response) {
 		PreConditions.checkNotNull(response, "response");
 
 		logger.info(String.format("Enviando resposta: %s", response));

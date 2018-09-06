@@ -1,7 +1,5 @@
 package br.com.jasf.microservicechallenge.messages;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-
 /******************
  * Representa uma mensagem de requisição do serviço insert.
  * 
@@ -9,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  *
  */
 public class WhitelistInsertRequest {
+
 	private String client;
 	private String regex;
 
@@ -32,4 +31,5 @@ public class WhitelistInsertRequest {
 	public String toString() {
 		return String.format("{ client=[%s], regex=[%s] }", client, regex);
 	}
+
 }

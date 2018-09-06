@@ -2,10 +2,9 @@ package br.com.jasf.microservicechallenge.config;
 
 import org.apache.commons.logging.*;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.*;
 import org.springframework.amqp.support.converter.*;
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 
 import br.com.jasf.microservicechallenge.utils.Util;
@@ -103,4 +102,5 @@ public class RabbitConfig {
 		admin.declareExchange(urlValidationExchange());
 		logger.info("Operação concluída");
 	}
+	
 }

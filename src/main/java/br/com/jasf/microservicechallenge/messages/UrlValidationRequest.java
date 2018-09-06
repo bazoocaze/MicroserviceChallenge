@@ -1,7 +1,5 @@
 package br.com.jasf.microservicechallenge.messages;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-
 /************************
  * Representa uma mensagem de requisição do serviço validation.
  * 
@@ -9,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  *
  */
 public class UrlValidationRequest {
+
 	private String client;
 	private String url;
 	private int correlationId;
@@ -41,4 +40,5 @@ public class UrlValidationRequest {
 	public String toString() {
 		return String.format("{ client=[%s], url=[%s], correlationId=[%s] }", client, url, correlationId);
 	}
+
 }

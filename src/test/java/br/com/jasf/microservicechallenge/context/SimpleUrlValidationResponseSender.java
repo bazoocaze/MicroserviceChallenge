@@ -11,7 +11,7 @@ public class SimpleUrlValidationResponseSender implements UrlValidationResponseS
 	public int sendResponseCount = 0;
 
 	@Override
-	public void SendResponse(UrlValidationResponse response) {
+	public void sendResponse(UrlValidationResponse response) {
 		sendResponseCount++;
 		lastResponse = response;
 	}

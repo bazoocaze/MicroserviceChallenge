@@ -45,7 +45,7 @@ public class UrlValidationResponseSenderImplTest {
 	@Test
 	public void testSendResponse_ValidateInput() {
 
-		assertThatIllegalArgumentException().isThrownBy(() -> senderImpl.SendResponse(null));
+		assertThatIllegalArgumentException().isThrownBy(() -> senderImpl.sendResponse(null));
 
 	}
 
@@ -57,7 +57,7 @@ public class UrlValidationResponseSenderImplTest {
 
 		BDDMockito.doNothing().when(rabbitTemplate).convertAndSend(responseExchange, responseroutingKey, response);
 
-		senderImpl.SendResponse(response);
+		senderImpl.sendResponse(response);
 
 		// Garante que executa chamada rabbitTemplate.convertAndSend + parâmetros
 		verify(rabbitTemplate, times(1)).convertAndSend(responseExchange, responseroutingKey, response);
