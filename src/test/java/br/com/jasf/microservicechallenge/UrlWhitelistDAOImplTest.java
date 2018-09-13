@@ -40,7 +40,7 @@ public class UrlWhitelistDAOImplTest {
 
 	@Before
 	public void runOnce() throws DataAccessException, IOException {
-		jdbcTemplate.execute(resourceConfig.getCreateTableResource());
+		jdbcTemplate.execute(resourceConfig.getCreateTableResourceH2());
 	}
 
 	@Test

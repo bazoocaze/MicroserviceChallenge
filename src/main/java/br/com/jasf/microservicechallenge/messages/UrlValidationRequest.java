@@ -10,7 +10,7 @@ public class UrlValidationRequest {
 
 	private String client;
 	private String url;
-	private int correlationId;
+	private Integer correlationId;
 
 	public String getClient() {
 		return client;
@@ -20,7 +20,7 @@ public class UrlValidationRequest {
 		return url;
 	}
 
-	public int getCorrelationId() {
+	public Integer getCorrelationId() {
 		return correlationId;
 	}
 
@@ -32,7 +32,7 @@ public class UrlValidationRequest {
 		this.url = url;
 	}
 
-	public void setCorrelationId(int correlationId) {
+	public void setCorrelationId(Integer correlationId) {
 		this.correlationId = correlationId;
 	}
 

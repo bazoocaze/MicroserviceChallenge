@@ -59,6 +59,11 @@ public class UrlValidationReceiver {
 			logger.warn(String.format("Requisição recebida inválida (url): %s", request));
 			return;
 		}
+		
+		if(request.getCorrelationId() == null) {
+			logger.warn(String.format("Requisição recebida inválida (correlatorionId): %s", request));
+			return;
+		}
 
 		Function<UrlWhitelistItem, Boolean> func = (item) -> {
 			if (request.getUrl().matches(item.getRegex())) {

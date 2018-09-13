@@ -1,6 +1,7 @@
 package br.com.jasf.microservicechallenge;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class UrlValidationReceiverTest {
 
 	@Before
 	public void runOnce() throws DataAccessException, IOException {
-		jdbcTemplate.execute(resourceConfig.getCreateTableResource());
+		jdbcTemplate.execute(resourceConfig.getCreateTableResourceH2());
 	}
 
 	public static ObjectMapper jsonMapper = new ObjectMapper();
@@ -102,7 +103,7 @@ public class UrlValidationReceiverTest {
 		assertNotNull(simpleSender.lastResponse);
 
 		// Garante que o CorrelationId é o mesmo da request
-		assertEquals(simpleSender.lastResponse.getCorrelationId(), request.getCorrelationId());
+		assertEquals(simpleSender.lastResponse.getCorrelationId(), (int) request.getCorrelationId());
 
 		// Garante regex null quando não deu match
 		assertNull(simpleSender.lastResponse.getRegex());
@@ -136,7 +137,7 @@ public class UrlValidationReceiverTest {
 		assertTrue(isResponseMatch("123", "bbb"));
 
 		// Garante que retorna a regex que deu match (lista global)
-		assertEquals(simpleSender.lastResponse.getRegex(), "b.*");
+		assertEquals("b.*", simpleSender.lastResponse.getRegex());
 
 		// Garante não match / outro cliente
 		assertFalse(isResponseMatch("111", "aaa"));
@@ -144,6 +145,16 @@ public class UrlValidationReceiverTest {
 		// Garante match via lista global
 		assertTrue(isResponseMatch("111", "bbb"));
 
+	}
+
+	@Test
+	public void testReceiveMessage_ValidateCorrelationId() throws JsonProcessingException {
+		UrlValidationRequest request = new UrlValidationRequest();
+		request.setCliente("123");
+		request.setUrl("http://www.test.com");
+		request.setCorrelationId(null);
+
+		assertFalse(testHasSentResponse(request));
 	}
 
 	private boolean testHasSentResponse(byte[] message) {
@@ -166,7 +177,7 @@ public class UrlValidationReceiverTest {
 		assertNotNull(simpleSender.lastResponse);
 
 		// Garante que o correlationId da response seja o mesmo da request
-		assertEquals(request.getCorrelationId(), simpleSender.lastResponse.getCorrelationId());
+		assertEquals((int) request.getCorrelationId(), simpleSender.lastResponse.getCorrelationId());
 
 		return simpleSender.lastResponse.isMatch();
 	}
